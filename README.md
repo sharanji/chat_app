@@ -1,16 +1,16 @@
-# unite
+# Chat and Pay App
 
 A new Flutter project.
 
-## Getting Started
+## key features
+** One to One Chat
+** Payment gateway using stripe
+** Google Login
 
-This project is a starting point for a Flutter application.
+Flutter Sdk required : 2.15 < sdk > 3.0.0
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+git clone this repo
+flutter pub install
+flutter run
+``
