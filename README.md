@@ -13,4 +13,4 @@ Flutter Sdk required : 2.15 < sdk > 3.0.0
 git clone this repo
 flutter pub install
 flutter run
-``
+```
