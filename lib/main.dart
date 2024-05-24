@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:unite/components/bottom_bar.dart';
 import 'package:unite/login.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:uuid/uuid.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -19,6 +21,8 @@ void main() async {
     persistenceEnabled: true,
   );
 
+  Stripe.publishableKey =
+      'pk_test_51IyCOjSETJCIOiuJ4aOpTuUwc0aMN1JMnlmVk1xxjKsGYSOZqTnry5bodhv2rpMsRz35ZQoBVVOjP8MR3XJsbbhh009BavDKQR';
   runApp(const MyApp());
 }
 
@@ -31,45 +35,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
       ),
-      home: FirebaseAuth.instance.currentUser!.email != null ? LoginPage() : ChatScreen(),
-    );
-  }
-}
+      home: StreamBuilder(
+        stream: _auth.userChanges(),
+        builder: (BuildContext context, snapshot) {
+          if (snapshot.hasData && (!snapshot.data!.isAnonymous)) {
+            return ChatScreen();
+          }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final _user = const types.User(
-    id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
-  );
-  final _user1 = const types.User(
-    id: '82091008-a484-4a89-ae75-a22bf8d6f3ab',
-  );
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(messages: [
-        types.TextMessage(
-          author: _user,
-          createdAt: DateTime.now().millisecondsSinceEpoch,
-          id: const Uuid().v4(),
-          text: 'Helllo',
-        ),
-        types.TextMessage(
-          author: _user1,
-          createdAt: DateTime.now().millisecondsSinceEpoch,
-          id: const Uuid().v4(),
-          text: 'hi',
-        )
-      ], onSendPressed: (_) {}, user: _user),
-      bottomNavigationBar: const CustomBottomBar(),
+          return LoginPage();
+        },
+      ),
     );
   }
 }

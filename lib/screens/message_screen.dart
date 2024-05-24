@@ -6,20 +6,21 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:unite/components/bottom_bar.dart';
 import 'package:unite/services/chatservices.dart';
 import 'package:uuid/uuid.dart';
 
-class ChatUserScreen extends StatefulWidget {
-  ChatUserScreen({super.key, required this.userId, required this.userName, required this.chatId});
+class MessageScreen extends StatefulWidget {
+  MessageScreen({super.key, required this.userId, required this.userName, required this.chatId});
   String userId;
   String userName;
   String? chatId;
 
   @override
-  State<ChatUserScreen> createState() => _ChatUserScreenState();
+  State<MessageScreen> createState() => _MessageScreenState();
 }
 
-class _ChatUserScreenState extends State<ChatUserScreen> {
+class _MessageScreenState extends State<MessageScreen> {
   final chatService = ChatService();
 
   @override

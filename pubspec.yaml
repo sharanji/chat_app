@@ -47,6 +47,7 @@ dependencies:
   flutter_firebase_chat_core: 
   cloud_firestore:  
   search_page: ^2.3.0
+  http:
 
 dev_dependencies:
   flutter_test:

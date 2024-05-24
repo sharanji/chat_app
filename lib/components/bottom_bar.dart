@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:unite/screens/payment_page.dart';
 
 class CustomBottomBar extends StatelessWidget {
   const CustomBottomBar({super.key});
@@ -8,6 +9,7 @@ class CustomBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      color: Theme.of(context).primaryColor,
       child: SizedBox(
         height: kBottomNavigationBarHeight,
         child: Row(
@@ -20,7 +22,13 @@ class CustomBottomBar extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.payment_outlined),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const PaymentScreen(),
+                  ),
+                );
+              },
             ),
           ],
         ),

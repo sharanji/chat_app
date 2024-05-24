@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:unite/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +24,28 @@ class _LoginPageState extends State<LoginPage> {
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where('userId', isEqualTo: googleUser!.id)
+        .get()
+        .then((value) {
+      if (value.docs.isEmpty) {
+        FirebaseFirestore.instance.collection('users').doc().set({
+          'userId': googleUser!.id,
+          'profileImage': googleUser.photoUrl,
+          'email': googleUser.email,
+          'name': googleUser.displayName,
+        });
+      } else {
+        FirebaseFirestore.instance.collection('users').doc(googleUser.id).update({
+          'userId': googleUser!.id,
+          'profileImage': googleUser.photoUrl,
+          'email': googleUser.email,
+          'name': googleUser.displayName,
+        });
+      }
+    });
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ChatScreen(),
-      ),
-    );
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
@@ -158,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const MyHomePage(),
+                                builder: (context) => ChatScreen(),
                               ),
                             );
                           },
@@ -190,6 +207,11 @@ class _LoginPageState extends State<LoginPage> {
                         child: GestureDetector(
                           onTap: () async {
                             UserCredential cred = await signInWithGoogle();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ChatScreen(),
+                              ),
+                            );
                           },
                           child: Container(
                             height: 50,
